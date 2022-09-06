@@ -1,10 +1,20 @@
 package dev.willydownhouse.customer;
 
+import java.util.List;
+
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.util.Objects;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/customers")
 public class CustomerResource {
@@ -13,15 +23,22 @@ public class CustomerResource {
     CustomerService customerService;
 
     @GET
+    @Path("/hello")
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "hello willy";
+        return "ciao wille";
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/{name}")
-    public String helloCustomer(String name) {
-        return customerService.greetCustomer(name);
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Customer> list() {
+        System.out.println("GET ALL ");
+        return customerService.getAllCustomers();
     }
+
+    @POST
+    public Customer add(Customer customer) {
+        return customerService.addCustomer(customer);
+    }
+
 }
